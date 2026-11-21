@@ -188,7 +188,10 @@ var KonmikExtension = {
 
         // Format sesuai situs: /api/manga?search=&genre=&status=&type=&sort=newest&limit=24&offset=0
         const q = encodeURIComponent((query || '').trim());
-        const genre = encodeURIComponent(f.genre || '');
+        // Genre harus berupa slug: huruf kecil, spasi diganti "-" (mis. "Big Breasts" → "big-breasts")
+        const genre = encodeURIComponent(
+            String(f.genre || '').trim().toLowerCase().replace(/[\s_]+/g, '-').replace(/-+/g, '-')
+        );
         const status = encodeURIComponent(f.status || '');
         const type = encodeURIComponent(f.type || '');
         const offset = (p - 1) * PAGE_SIZE;
