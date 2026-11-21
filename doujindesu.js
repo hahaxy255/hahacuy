@@ -19,8 +19,8 @@
  */
 
 // ── KONFIGURASI (isi sendiri) ────────────────────────────────────────────
-const APP_SECRET = 'dfdf72051dbfdc7d76889ebd31324e74';   // ← isi nilai DOUJIN_APP_SECRET
-const SALT = 'doujindesu-scrapers-cannot-read-this-super-secret-salt-2026-v2';         // ← isi nilai DOUJIN_SALT
+const APP_SECRET = '';   // ← isi nilai DOUJIN_APP_SECRET
+const SALT = '';         // ← isi nilai DOUJIN_SALT
 
 const BASE = 'https://doujin.desu.xxx';
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
@@ -181,17 +181,21 @@ var KonmikExtension = {
      */
     async getList(page = 1, query = '', filters = {}) {
         const p = Math.max(1, parseInt(page) || 1);
-        let sort = 'latest_chapter';
-        if (filters && filters.sort === 'popular') sort = 'views';
-        else if (filters && filters.sort === 'rating') sort = 'rating';
+        const f = filters || {};
+        let sort = 'newest';
+        if (f.sort === 'popular') sort = 'views';
+        else if (f.sort === 'rating') sort = 'rating';
 
-        const params = [`limit=${PAGE_SIZE}`, `sort=${sort}`];
-        if (query && query.trim()) params.push(`q=${encodeURIComponent(query.trim())}`);
-        if (filters && filters.type) params.push(`type=${encodeURIComponent(filters.type)}`);
-        if (filters && filters.genre) params.push(`genre=${encodeURIComponent(filters.genre)}`);
-        if (p > 1) params.push(`offset=${(p - 1) * PAGE_SIZE}`);
+        // Format sesuai situs: /api/manga?search=&genre=&status=&type=&sort=newest&limit=24&offset=0
+        const q = encodeURIComponent((query || '').trim());
+        const genre = encodeURIComponent(f.genre || '');
+        const status = encodeURIComponent(f.status || '');
+        const type = encodeURIComponent(f.type || '');
+        const offset = (p - 1) * PAGE_SIZE;
 
-        const data = await apiGet(`/manga?${params.join('&')}`);
+        const data = await apiGet(
+            `/manga?search=${q}&genre=${genre}&status=${status}&type=${type}&sort=${sort}&limit=${PAGE_SIZE}&offset=${offset}`
+        );
         const list = toList(data);
 
         const mangaList = list
