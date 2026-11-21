@@ -19,8 +19,8 @@
  */
 
 // ── KONFIGURASI (isi sendiri) ────────────────────────────────────────────
-const APP_SECRET = '';   // ← isi nilai DOUJIN_APP_SECRET
-const SALT = '';         // ← isi nilai DOUJIN_SALT
+const APP_SECRET = 'dfdf72051dbfdc7d76889ebd31324e74';   // ← isi nilai DOUJIN_APP_SECRET
+const SALT = 'doujindesu-scrapers-cannot-read-this-super-secret-salt-2026-v2';         // ← isi nilai DOUJIN_SALT
 
 const BASE = 'https://doujin.desu.xxx';
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
